@@ -78,7 +78,7 @@ namespace ImpostersOrdeal
         {
             UpdateUIMasterdatas(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender);
             UpdateAddPersonalTable(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo);
-            UpdateMotionTimingData(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo);
+            UpdateMotionTimingDatas(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender);
             UpdatePokemonInfos(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender);
             UpdateCommonMsbt(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, formName);
             UpdatePersonalInfos(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo);
@@ -124,7 +124,8 @@ namespace ImpostersOrdeal
                 {
                     String oldPMName = string.Format("pm{0}_{1}", insertRequest.srcMonsNo.ToString("D4"), insertRequest.srcFormNo.ToString("D2"));
                     String newPMName = string.Format("pm{0}_{1}", insertRequest.dstMonsNo.ToString("D4"), insertRequest.dstFormNo.ToString("D2"));
-                    if (record.assetBundleName.Contains(oldPMName))
+
+                    if (record.assetBundleName.Contains(oldPMName) && record.projectName.Equals("Pokemon Database"))
                     {
                         AssetBundleRecord newRecord = (AssetBundleRecord)record.Clone();
                         newRecord.assetBundleName = newRecord.assetBundleName.Replace(oldPMName, newPMName);
@@ -243,8 +244,17 @@ namespace ImpostersOrdeal
         }
         public void UpdatePokemonInfos(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo, int gender)
         {
-            UpdatePokemonInfo(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender, false);
-            UpdatePokemonInfo(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender, true);
+            if (gender == 0)
+            {
+                UpdatePokemonInfo(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, 0, false);
+                UpdatePokemonInfo(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, 0, true);
+                UpdatePokemonInfo(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, 1, false);
+                UpdatePokemonInfo(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, 1, true);
+            } else
+            {
+                UpdatePokemonInfo(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender, false);
+                UpdatePokemonInfo(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender, true);
+            }
         }
         public void UpdatePokemonInfo(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo, int gender, bool isRare)
         {
@@ -254,7 +264,8 @@ namespace ImpostersOrdeal
             Masterdatas.PokemonInfoCatalog basePokemonInfoCatalog = null;
             foreach (Masterdatas.PokemonInfoCatalog pokemonInfoCatalog in GlobalData.gameData.pokemonInfos)
             {
-                if (pokemonInfoCatalog.MonsNo == srcMonsNo && pokemonInfoCatalog.FormNo == srcFormNo && pokemonInfoCatalog.Rare == isRare)
+                if (pokemonInfoCatalog.MonsNo == srcMonsNo && pokemonInfoCatalog.FormNo == srcFormNo 
+                    && pokemonInfoCatalog.Rare == isRare && pokemonInfoCatalog.Sex == gender)
                 {
                     basePokemonInfoCatalog = pokemonInfoCatalog;
                     break;
@@ -270,12 +281,23 @@ namespace ImpostersOrdeal
             GlobalData.gameData.pokemonInfos.Add(newPokemonInfoCatalog);
         }
 
-        public void UpdateMotionTimingData(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo)
+        public void UpdateMotionTimingDatas(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo, int gender)
+        {
+            if (gender == 2)
+            {
+                UpdateMotionTimingData(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender);
+            } else
+            {
+                UpdateMotionTimingData(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, 0);
+                UpdateMotionTimingData(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, 1);
+            }
+        }
+        public void UpdateMotionTimingData(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo, int gender)
         {
             BattleMasterdatas.MotionTimingData baseMotionTimingData = null;
             foreach (BattleMasterdatas.MotionTimingData motionTimingData in GlobalData.gameData.motionTimingData)
             {
-                if (motionTimingData.MonsNo == srcMonsNo && motionTimingData.FormNo == srcFormNo)
+                if (motionTimingData.MonsNo == srcMonsNo && motionTimingData.FormNo == srcFormNo && motionTimingData.Sex == gender)
                 {
                     baseMotionTimingData = motionTimingData;
                     break;

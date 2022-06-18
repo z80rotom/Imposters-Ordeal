@@ -757,9 +757,9 @@ namespace ImpostersOrdeal
                 addPersonal.valid_flag = addPersonalTableArray[i]["valid_flag"].value.value.asUInt8 == 1;
                 addPersonal.monsno = addPersonalTableArray[i]["monsno"].value.value.asUInt16;
                 addPersonal.formno = addPersonalTableArray[i]["formno"].value.value.asUInt16;
-                addPersonal.isEnableSynchronize = addPersonalTableArray[i]["isEnableSynchronize"].value.value.asUInt8 == 0;
+                addPersonal.isEnableSynchronize = addPersonalTableArray[i]["isEnableSynchronize"].value.value.asUInt8 == 1;
                 addPersonal.escape = addPersonalTableArray[i]["escape"].value.value.asUInt8;
-                addPersonal.isDisableReverce = addPersonalTableArray[i]["isDisableReverce"].value.value.asUInt8 == 0;
+                addPersonal.isDisableReverce = addPersonalTableArray[i]["isDisableReverce"].value.value.asUInt8 == 1;
                 gameData.addPersonalTables.Add(addPersonal);
             }
         }
@@ -818,7 +818,7 @@ namespace ImpostersOrdeal
                 pokemonVoice.CenterPointOffset.X = pokemonVoices[i]["CenterPointOffset"].children[0].value.value.asFloat;
                 pokemonVoice.CenterPointOffset.Y = pokemonVoices[i]["CenterPointOffset"].children[1].value.value.asFloat;
                 pokemonVoice.CenterPointOffset.Z = pokemonVoices[i]["CenterPointOffset"].children[2].value.value.asFloat;
-                pokemonVoice.RotationLimits = pokemonVoices[i]["RotationLimits"].value.value.asUInt8 == 0;
+                pokemonVoice.RotationLimits = pokemonVoices[i]["RotationLimits"].value.value.asUInt8 == 1;
                 pokemonVoice.RotationLimitAngle = new();
                 pokemonVoice.RotationLimitAngle.X = pokemonVoices[i]["RotationLimitAngle"].children[0].value.value.asFloat;
                 pokemonVoice.RotationLimitAngle.Y = pokemonVoices[i]["RotationLimitAngle"].children[1].value.value.asFloat;
@@ -884,7 +884,7 @@ namespace ImpostersOrdeal
                 catalog.MonsNo = catalogArray[i]["MonsNo"].value.value.asInt32;
                 catalog.FormNo = catalogArray[i]["FormNo"].value.value.asInt32;
                 catalog.Sex = catalogArray[i]["Sex"].value.value.asUInt8;
-                catalog.Rare = catalogArray[i]["Rare"].value.value.asUInt8 == 0;
+                catalog.Rare = catalogArray[i]["Rare"].value.value.asUInt8 == 1;
                 catalog.AssetBundleName = catalogArray[i]["AssetBundleName"].GetValue().AsString();
                 catalog.BattleScale = catalogArray[i]["BattleScale"].value.value.asFloat;
                 catalog.ContestScale = catalogArray[i]["ContestScale"].value.value.asFloat;
@@ -991,8 +991,8 @@ namespace ImpostersOrdeal
                 catalog.AppearLimit = catalogArray[i]["AppearLimit"].value.value.asFloat;
                 catalog.MoveType = (Masterdatas.MoveType) catalogArray[i]["MoveType"].value.value.asInt32;
 
-                catalog.GroundEffect = catalogArray[i]["GroundEffect"].value.value.asUInt8 == 0;
-                catalog.Waitmoving = catalogArray[i]["Waitmoving"].value.value.asUInt8 == 0;
+                catalog.GroundEffect = catalogArray[i]["GroundEffect"].value.value.asUInt8 == 1;
+                catalog.Waitmoving = catalogArray[i]["Waitmoving"].value.value.asUInt8 == 1;
                 catalog.BattleAjustHeight = catalogArray[i]["BattleAjustHeight"].value.value.asInt32;
 
                 gameData.pokemonInfos.Add(catalog);
