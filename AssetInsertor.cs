@@ -80,8 +80,8 @@ namespace ImpostersOrdeal
             UpdateAddPersonalTable(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo);
             UpdateMotionTimingDatas(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender);
             UpdatePokemonInfos(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, gender);
-            UpdateCommonMsbt(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, formName);
-            UpdatePersonalInfos(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo);
+            int personalID = UpdatePersonalInfos(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo);
+            UpdateCommonMsbt(srcMonsNo, dstMonsNo, srcFormNo, dstFormNo, personalID, formName);
             GlobalData.gameData.SetModified(GlobalData.GameDataSet.DataField.UIMasterdatas);
             GlobalData.gameData.SetModified(GlobalData.GameDataSet.DataField.AddPersonalTable);
             GlobalData.gameData.SetModified(GlobalData.GameDataSet.DataField.MotionTimingData);
@@ -147,7 +147,7 @@ namespace ImpostersOrdeal
             GlobalData.fileManager.SaveAssetBundleDownloadManifest(abdm, "Dpr.bin");
         }
 
-        public void UpdatePersonalInfos(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo)
+        public int UpdatePersonalInfos(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo)
         {
             // Will only really work for adding a new form. Not a new pokemon based on another one
             Pokemon basePokemon = null;
@@ -173,8 +173,9 @@ namespace ImpostersOrdeal
             GlobalData.gameData.dexEntries[basePokemon.dexID].forms.Add(newPokemon);
             GlobalData.gameData.personalEntries.Add(newPokemon);
             DataParser.SetFamilies();
+            return newPokemon.personalID;
         }
-        public void UpdateCommonMsbt(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo, String formName)
+        public void UpdateCommonMsbt(int srcMonsNo, int dstMonsNo, int srcFormNo, int dstFormNo, int personalID, string formName)
         {
             foreach (MessageFileSet msgFileSet in GlobalData.gameData.messageFileSets)
             {
@@ -195,7 +196,7 @@ namespace ImpostersOrdeal
                         }
                         LabelData newLabelData = (LabelData) baseLabelData.Clone();
                         newLabelData.labelName = string.Format("ZKN_FORM_{0}_{1}", dstMonsNo.ToString("D3"), dstFormNo.ToString("D3"));
-                        newLabelData.labelIndex = msgFile.labelDatas.Count;
+                        newLabelData.labelIndex = personalID;
                         newLabelData.arrayIndex = msgFile.labelDatas.Count;
                         newLabelData.wordDatas[0].str = formName;
 
@@ -215,7 +216,7 @@ namespace ImpostersOrdeal
                         }
                         LabelData newLabelData = (LabelData)baseLabelData.Clone();
                         newLabelData.labelName = string.Format("ZKN_HEIGHT_{0}_{1}", dstMonsNo.ToString("D3"), dstFormNo.ToString("D3"));
-                        newLabelData.labelIndex = msgFile.labelDatas.Count;
+                        newLabelData.labelIndex = personalID;
                         newLabelData.arrayIndex = msgFile.labelDatas.Count;
 
                         msgFile.labelDatas.Add(newLabelData);
@@ -234,7 +235,7 @@ namespace ImpostersOrdeal
                         }
                         LabelData newLabelData = (LabelData)baseLabelData.Clone();
                         newLabelData.labelName = string.Format("ZKN_WEIGHT_{0}_{1}", dstMonsNo.ToString("D3"), dstFormNo.ToString("D3"));
-                        newLabelData.labelIndex = msgFile.labelDatas.Count;
+                        newLabelData.labelIndex = personalID;
                         newLabelData.arrayIndex = msgFile.labelDatas.Count;
 
                         msgFile.labelDatas.Add(newLabelData);
